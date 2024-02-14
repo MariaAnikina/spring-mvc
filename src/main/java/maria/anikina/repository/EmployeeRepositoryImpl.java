@@ -1,6 +1,7 @@
 package maria.anikina.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import maria.anikina.logging.Logging;
 import maria.anikina.model.EmployeeEntity;
 import org.springframework.stereotype.Component;
 
@@ -16,48 +17,49 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 	private Map<Integer, EmployeeEntity> employees = new HashMap<>();
 	private int idLast = 1;
 
+	@Logging
+	@Override
 	public EmployeeEntity create(EmployeeEntity employee) {
 		employee.setId(idLast);
 		idLast++;
 		EmployeeEntity employeeEntity = employees.put(employee.getId(), employee);
-		log.info("Создан руководитель по id = " + employee.getId());
 		return employeeEntity;
 	}
 
+	@Logging
 	@Override
 	public EmployeeEntity update(EmployeeEntity employee) {
 		EmployeeEntity employeeEntity = employees.put(employee.getId(), employee);
-		log.info("Обновлен руководитель по id = " + employee.getId());
 		return employeeEntity;
 	}
 
+	@Logging
 	@Override
 	public EmployeeEntity delete(Integer id) {
 		EmployeeEntity employeeEntity = employees.remove(id);
-		log.info("Удален руководитель по id = " + id);
 		return employeeEntity;
 	}
 
+	@Logging
 	@Override
 	public Collection<EmployeeEntity> getEmployees() {
 		Collection<EmployeeEntity> employeeEntities = employees.values();
-		log.info("Получены все сотрудники");
 		return employeeEntities;
 	}
 
+	@Logging
 	@Override
 	public EmployeeEntity getEmployeeById(Integer id) {
 		EmployeeEntity employeeEntity = employees.get(id);
-		log.info("Получен сотрудник с id = " + id);
 		return employeeEntity;
 	}
 
+	@Logging
 	@Override
 	public List<EmployeeEntity> getEmployeesBySupervisorId(Integer supervisorId) {
 		List<EmployeeEntity> employeesBySupervisorId = employees.values().stream()
 				.filter(employee -> employee.getSupervisorId() == supervisorId)
 				.collect(Collectors.toList());
-		log.info("Получены сотрудники руководителя с id = " + supervisorId);
 		return employeesBySupervisorId;
 	}
 }
