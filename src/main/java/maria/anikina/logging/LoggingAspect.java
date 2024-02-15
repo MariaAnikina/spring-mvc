@@ -16,7 +16,7 @@ public class LoggingAspect {
 	@Around("@annotation(Logging)")
 	public Object executeOnAnyMethodCall(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		String nameMethod = proceedingJoinPoint.getSignature().getName();
-		String nameClass = proceedingJoinPoint.getClass().getSimpleName();
+		String nameClass = proceedingJoinPoint.getSignature().getDeclaringTypeName();
 		log.info("Метод " + nameMethod + " класса " + nameClass + " готов начать свою работу");
 		Object result;
 		try {
